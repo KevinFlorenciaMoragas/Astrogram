@@ -1,0 +1,61 @@
+---
+import Layout from "../layouts/Layout.astro";
+import UserController from "../controller/UserController";
+let err;
+if (Astro.request.method === "POST") {
+    const userController = new UserController();
+    const data = await Astro.request.formData();
+    const name = data.get("name");
+    const password = data.get("password");
+
+    const usuarioValido = await userController.login(name, password);
+
+    if (usuarioValido.error) {
+        err = usuarioValido.error;
+    } else {
+        const cookieOptions = { httpOnly: false, maxAge: 7200000 };
+        Astro.cookies.set("token", usuarioValido.token, cookieOptions);
+        return Astro.redirect("/");
+    }
+}
+---
+
+<Layout title="Login">
+    <form
+        method="post"
+        class="form d-flex flex-column justify-content-center align-items-center"
+    >
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+                type="text"
+                name="name"
+                class="form-control"
+                id="name"
+                aria-describedby="name"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                aria-describedby="password"
+            />
+        </div>
+        <div class="d-flex flex-row">
+            <button class="btn btn-primary m-1"> Login </button>
+            <a>
+                <button class="btn btn-primary m-1"> Register </button>
+            </a>
+        </div>
+    </form>
+</Layout>
+<style>
+    .form {
+        height: 80vh;
+        background-color: #f8f8f8;
+    }
+</style>

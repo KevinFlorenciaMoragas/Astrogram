@@ -1,0 +1,49 @@
+---
+const cookie = Astro.cookies.has("token");
+---
+
+<header class="d-flex flex-row justify-content-between">
+    <a href="/">
+        <div class="col-4 title d-flex flex-row align-items-center m-2">
+            <img src="/favicon.svg" />
+            <h3>Astrogram</h3>
+        </div>
+    </a>
+    <div class="d-flex flex-row m-2 col-3 align-items-center">
+        {
+            !cookie && (
+                <a href="/login">
+                    <button class="btn btn-primary">Login</button>
+                </a>
+            )
+        }
+        {
+            cookie && (
+                <a href="/logout">
+                    <button class="btn ">Logout</button>
+                </a>
+            )
+        }
+    </div>
+</header>
+
+<style>
+    header {
+        height: auto;
+        background-color: #2B3964;
+        color: #D0D8DC;
+        
+    }
+    a{
+        text-decoration: none;
+        color: #D0D8DC;
+    }
+    img {
+        height: auto;
+        width: 4em;
+    }
+    .btn{
+        color:#D0D8DC;
+        background-color: #B80C09   ;
+    }
+</style>

@@ -1,0 +1,80 @@
+---
+import config from "../config/config";
+import Layout from "../layouts/Layout.astro";
+let err;
+if (!Astro.cookies.has("token")) {
+    return Astro.redirect("/login");
+}
+if (Astro.request.method === "POST") {
+    const data = await Astro.request.formData();
+    const comment = data.get("comment");
+    const image = data.get("img") as File;
+
+    let token = Astro.cookies.get("token").value;
+    const dataSend = new FormData();
+    dataSend.append("hashtags", comment);
+    dataSend.append("file", image);
+
+    const options = {
+        method: "POST",
+        body: dataSend,
+        headers: { Authorization: `Bearer ${token}` },
+    };
+    console.log(config.API_URL);
+    let x = await fetch(`${config.API_URL}upload`, options);
+    console.log(x);
+    x = await x.json();
+    if (!x.ok) {
+        err = x.ok;
+    } else {
+        return Astro.redirect("/");
+    }
+}
+---
+
+<Layout title="upload">
+    <div class="">
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            class=""
+        >
+            <div class="mb-4">
+                <label
+                    class=""
+                    for="comment"
+                >
+                    comentari
+                </label>
+                <input
+                    id="comment"
+                    name="comment"
+                    class=""
+                    type="text"
+                    placeholder="comment"
+                />
+            </div>
+
+            <label for="formfile" class="form-label" for="formfile">foto</label>
+            <input
+                class="form-control"
+                id="formfile"
+                type="file"
+                name="img"
+                accept="image/*"
+                capture="environment"
+            />
+
+            <div>
+                <button
+                    class=""
+                    type="submit"
+                >
+                    Subir
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <p class="">{err}</p>
+</Layout>

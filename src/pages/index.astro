@@ -1,0 +1,28 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Picture from "../components/Picture.astro";
+import Button from "../components/Button.astro";
+const token = Astro.cookies.get("token");
+
+if (!Astro.cookies.has("token")) {
+	return Astro.redirect("/login");
+}
+console.log("hola");
+
+let x = await fetch("https://ricardhernandez.com/api/allimages");
+const images = await x.json();
+---
+
+<Layout title="Welcome to Astro.">
+	<div class="index">
+		{images.map((e) => <Picture img={e} />)}
+		<Button />
+	</div>
+</Layout>
+
+<style>
+	.index{
+		margin-top: 2em;
+		margin-bottom: 2em;
+	}
+</style>
