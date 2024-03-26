@@ -33,29 +33,19 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="upload">
-    <div class="">
-        <form
-            method="POST"
-            enctype="multipart/form-data"
-            class=""
-        >
-            <div class="mb-4">
-                <label
-                    class=""
-                    for="comment"
-                >
-                    comentari
-                </label>
-                <input
-                    id="comment"
-                    name="comment"
-                    class=""
-                    type="text"
-                    placeholder="comment"
-                />
-            </div>
-
-            <label for="formfile" class="form-label" for="formfile">foto</label>
+    <form method="POST" enctype="multipart/form-data" class="d-flex flex-column justify-content-center">
+        <div class="mb-3">
+            <label class="form-label" for="comment"> Comentario </label>
+            <input
+                id="comment"
+                name="comment"
+                class="form-control"
+                type="text"
+                placeholder="#hola"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="formfile" class="form-label" for="formfile">Foto</label>
             <input
                 class="form-control"
                 id="formfile"
@@ -64,17 +54,16 @@ if (Astro.request.method === "POST") {
                 accept="image/*"
                 capture="environment"
             />
-
-            <div>
-                <button
-                    class=""
-                    type="submit"
-                >
-                    Subir
-                </button>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div mb-3>
+            <button class="btn btn-primary" type="submit"> Subir </button>
+        </div>
+    </form>
 
     <p class="">{err}</p>
 </Layout>
+    <style>
+        form{
+            height: 100vh;
+        }
+    </style>
